@@ -1,0 +1,106 @@
+{
+  "name": "Docs",
+  "description": "Open source document editor for collaborative knowledge building",
+  "repository": "https://github.com/suitenumerique/docs",
+  "website": "https://github.com/suitenumerique/docs",
+  "logo": "https://raw.githubusercontent.com/suitenumerique/docs/main/docs/assets/docs-logo.png",
+  "stack": "scalingo-22",
+  "env": {
+    "DJANGO_CONFIGURATION": {
+      "description": "Django configuration class to use",
+      "value": "Production"
+    },
+    "DJANGO_SECRET_KEY": {
+      "description": "Django secret key for cryptographic signing",
+      "generator": "secret"
+    },
+    "DJANGO_SETTINGS_MODULE": {
+      "description": "Django settings module",
+      "value": "impress.settings"
+    },
+    "DATABASE_URL": {
+      "description": "PostgreSQL database URL",
+      "generator": "url",
+      "template": "postgres://%URL%"
+    },
+    "REDIS_URL": {
+      "description": "Redis URL for caching and Celery",
+      "generator": "url",
+      "template": "redis://%URL%"
+    },
+    "AWS_S3_ACCESS_KEY_ID": {
+      "description": "S3 storage access key ID",
+      "required": true
+    },
+    "AWS_S3_SECRET_ACCESS_KEY": {
+      "description": "S3 storage secret access key",
+      "required": true
+    },
+    "AWS_STORAGE_BUCKET_NAME": {
+      "description": "S3 bucket name for media storage",
+      "required": true
+    },
+    "AWS_S3_REGION_NAME": {
+      "description": "S3 region name",
+      "required": true
+    },
+    "OIDC_RP_CLIENT_ID": {
+      "description": "Keycloak client ID",
+      "required": true
+    },
+    "OIDC_RP_CLIENT_SECRET": {
+      "description": "Keycloak client secret",
+      "required": true
+    },
+    "OIDC_OP_JWKS_ENDPOINT": {
+      "description": "Keycloak JWKS endpoint",
+      "required": true
+    },
+    "OIDC_OP_AUTHORIZATION_ENDPOINT": {
+      "description": "Keycloak authorization endpoint",
+      "required": true
+    },
+    "OIDC_OP_TOKEN_ENDPOINT": {
+      "description": "Keycloak token endpoint",
+      "required": true
+    },
+    "OIDC_OP_USER_ENDPOINT": {
+      "description": "Keycloak user info endpoint",
+      "required": true
+    },
+    "Y_PROVIDER_API_KEY": {
+      "description": "Y-provider API key",
+      "generator": "secret"
+    },
+    "Y_PROVIDER_API_BASE_URL": {
+      "description": "Y-provider base URL",
+      "generator": "url",
+      "template": "http://%URL%:4444"
+    }
+  },
+  "addons": [
+    {
+      "plan": "postgresql:postgresql-starter-512",
+      "options": {
+        "version": "16"
+      }
+    },
+    {
+      "plan": "redis:redis-starter-512"
+    }
+  ],
+  "scripts": {
+    "first-deploy": "cd src/frontend && yarn install && yarn build && cp -r .next/static/* ../backend/static/frontend/ && cd ../backend && python manage.py migrate --noinput && python manage.py collectstatic --noinput",
+    "postdeploy": "cd src/backend && python manage.py migrate --noinput"
+  },
+  "formation": {
+    "web": {
+      "amount": 1,
+      "size": "M"
+    },
+    "worker": {
+      "amount": 1,
+      "size": "S"
+    }
+  }
+} 
