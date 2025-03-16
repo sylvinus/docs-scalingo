@@ -816,6 +816,12 @@ class ProductionInsecure(Production):
     STATIC_ROOT = values.Value(os.path.join(DATA_DIR, "static_full"), environ_name="STATIC_ROOT")
 
     WHITENOISE_INDEX_FILE = True
+    
+    # Add our SPA middleware to handle frontend routes
+    MIDDLEWARE = [
+        'core.middleware.StaticRewritesMiddleware',
+    ] + Production.MIDDLEWARE
+    
 
 class Feature(Production):
     """
