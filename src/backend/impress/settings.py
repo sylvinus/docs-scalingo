@@ -813,7 +813,7 @@ class ProductionInsecure(Production):
     SECURE_CONTENT_TYPE_NOSNIFF = False
 
     STATIC_URL = "/"
-    STATIC_ROOT = os.path.join(DATA_DIR, "static_full")
+    STATIC_ROOT = values.Value(os.path.join(DATA_DIR, "static_full"), environ_name="STATIC_ROOT")
 
     WHITENOISE_INDEX_FILE = True
 
