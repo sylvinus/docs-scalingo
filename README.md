@@ -42,6 +42,9 @@ Docs is a collaborative text editor designed to address common challenges in kno
 ### Self-host
 *   🚀 Easy to install, scalable and secure alternative to Notion, Outline or Confluence
 
+[![Deploy on Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://dashboard.scalingo.com/create/app?source=https://github.com/sylvinus/docs-scalingo#main)
+
+
 ## Getting started 🔧
 
 ### Test it

@@ -16,6 +16,8 @@ from socket import gethostbyname, gethostname
 
 from django.utils.translation import gettext_lazy as _
 
+import dj_database_url
+
 import sentry_sdk
 from configurations import Configuration, values
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -74,7 +76,7 @@ class Base(Configuration):
 
     # Database
     DATABASES = {
-        "default": {
+        "default": dj_database_url.config() if os.environ.get("DATABASE_URL") else {
             "ENGINE": values.Value(
                 "django.db.backends.postgresql_psycopg2",
                 environ_name="DB_ENGINE",
@@ -796,6 +798,24 @@ class Production(Base):
         },
     }
 
+class ProductionInsecure(Production):
+    """
+    Production environment settings without SSL or secure headers
+    """
+
+    ALLOWED_HOSTS = ["*"]
+    SECURE_SSL_REDIRECT = False
+    SECURE_PROXY_SSL_HEADER = None
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
+    SECURE_HSTS_PRELOAD = False
+    SECURE_BROWSER_XSS_FILTER = False
+    SECURE_CONTENT_TYPE_NOSNIFF = False
+
+    STATIC_URL = "/"
+    STATIC_ROOT = os.path.join(DATA_DIR, "static_full")
+
+    WHITENOISE_INDEX_FILE = True
 
 class Feature(Production):
     """

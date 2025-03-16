@@ -18,16 +18,6 @@
       "description": "Django settings module",
       "value": "impress.settings"
     },
-    "DATABASE_URL": {
-      "description": "PostgreSQL database URL",
-      "generator": "url",
-      "template": "postgres://%URL%"
-    },
-    "REDIS_URL": {
-      "description": "Redis URL for caching and Celery",
-      "generator": "url",
-      "template": "redis://%URL%"
-    },
     "AWS_S3_ACCESS_KEY_ID": {
       "description": "S3 storage access key ID",
       "required": true
