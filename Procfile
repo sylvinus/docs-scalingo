@@ -1,1 +1,0 @@
-web: cd src/backend && gunicorn impress.wsgi:application --log-file -
