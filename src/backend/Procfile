@@ -1,1 +1,2 @@
-web: gunicorn impress.wsgi:application --log-file -
+web: cd src/backend && gunicorn impress.wsgi:application --log-file -
+tcp: cd src/frontend/servers/y-provider/ && yarn start
