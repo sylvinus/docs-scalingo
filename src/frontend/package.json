@@ -17,7 +17,7 @@
     "app:dev": "yarn APP_IMPRESS run dev",
     "app:start": "yarn APP_IMPRESS run start",
     "app:build": "yarn APP_IMPRESS run build",
-    "build": "yarn APP_IMPRESS run build",
+    "build": "yarn APP_IMPRESS run build && yarn COLLABORATION_SERVER run build",
     "app:test": "yarn APP_IMPRESS run test",
     "ci:build": "yarn APP_IMPRESS run build:ci",
     "e2e:test": "yarn APP_E2E run test",
