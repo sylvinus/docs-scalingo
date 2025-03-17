@@ -1,0 +1,4 @@
+src/backend/demo
+src/frontend/apps/e2e
+src/frontend/apps/impress/node_modules
+docker
