@@ -11,6 +11,7 @@ from core.models import DocumentAccess, RoleChoices, get_trashbin_cutoff
 ACTION_FOR_METHOD_TO_PERMISSION = {
     "versions_detail": {"DELETE": "versions_destroy", "GET": "versions_retrieve"},
     "children": {"GET": "children_list", "POST": "children_create"},
+    "collaboration_auth_jwt": {"GET": "retrieve"},
 }
 
 

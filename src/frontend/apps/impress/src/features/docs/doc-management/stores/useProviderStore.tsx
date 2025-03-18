@@ -2,6 +2,7 @@ import { HocuspocusProvider } from '@hocuspocus/provider';
 import * as Y from 'yjs';
 import { create } from 'zustand';
 
+import { fetchAPI } from '@/api';
 import { Base64 } from '@/features/docs/doc-management';
 
 export interface UseCollaborationStore {
@@ -33,6 +34,15 @@ export const useProviderStore = create<UseCollaborationStore>((set, get) => ({
       url: wsUrl,
       name: storeId,
       document: doc,
+      token: async (): Promise<string> => {
+        const response = await fetchAPI(
+          `documents/${storeId}/collaboration-auth-jwt/`,
+        );
+        const data: { token: string } = (await response.json()) as {
+          token: string;
+        };
+        return data.token;
+      },
     });
 
     set({

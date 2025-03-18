@@ -43,7 +43,7 @@ export const collaborationResetConnectionsHandler = (
       }
 
       doc.getConnections().forEach((connection) => {
-        const connectionUserId = connection.request.headers['x-user-id'];
+        const connectionUserId = connection.context.user_id;
         if (connectionUserId === userId) {
           connection.close();
         }

@@ -1,6 +1,8 @@
 """API endpoints"""
 # pylint: disable=too-many-lines
 
+import datetime
+import jwt
 import logging
 import re
 import uuid
@@ -1067,6 +1069,33 @@ class DocumentViewSet(
         }
 
         return drf.response.Response("authorized", headers=headers, status=200)
+
+    @drf.decorators.action(detail=True, methods=["get"], url_path="collaboration-auth-jwt")
+    def collaboration_auth_jwt(self, request, *args, **kwargs):
+        """
+        This view is used to issue a short-lived JWT token for the collaboration server
+        to be used as a Bearer token in the Authorization header.
+        """
+
+        document = self.get_object()
+
+        user_abilities = document.get_abilities(request.user)
+        can_edit = user_abilities["partial_update"]
+
+        expires_at = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=5)
+
+        jwt_token = jwt.encode(
+            {
+                "user_id": str(request.user.id),
+                "can_edit": can_edit,
+                "document_id": str(document.id),
+                "exp": expires_at,
+            },
+            settings.COLLABORATION_SERVER_SECRET,
+            algorithm="HS256",
+        )
+
+        return drf.response.Response({"token": jwt_token}, status=200)
 
     @drf.decorators.action(
         detail=True,

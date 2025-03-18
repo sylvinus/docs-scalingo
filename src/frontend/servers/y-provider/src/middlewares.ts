@@ -46,13 +46,5 @@ export const wsSecurity = (
     return;
   }
 
-  // Secret API Key check
-  const apiKey = req.headers['authorization'];
-  if (apiKey !== COLLABORATION_SERVER_SECRET) {
-    console.error('Forbidden: Invalid API Key');
-    ws.close();
-    return;
-  }
-
   next();
 };
