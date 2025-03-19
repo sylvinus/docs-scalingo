@@ -2,7 +2,6 @@
 # pylint: disable=too-many-lines
 
 import datetime
-import jwt
 import logging
 import re
 import uuid
@@ -20,6 +19,7 @@ from django.db.models.expressions import RawSQL
 from django.db.models.functions import Left, Length
 from django.http import Http404
 
+import jwt
 import rest_framework as drf
 from botocore.exceptions import ClientError
 from django_filters import rest_framework as drf_filters
@@ -1070,7 +1070,9 @@ class DocumentViewSet(
 
         return drf.response.Response("authorized", headers=headers, status=200)
 
-    @drf.decorators.action(detail=True, methods=["get"], url_path="collaboration-auth-jwt")
+    @drf.decorators.action(
+        detail=True, methods=["get"], url_path="collaboration-auth-jwt"
+    )
     def collaboration_auth_jwt(self, request, *args, **kwargs):
         """
         This view is used to issue a short-lived JWT token for the collaboration server
@@ -1082,7 +1084,9 @@ class DocumentViewSet(
         user_abilities = document.get_abilities(request.user)
         can_edit = user_abilities["partial_update"]
 
-        expires_at = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=5)
+        expires_at = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
+            minutes=5
+        )
 
         jwt_token = jwt.encode(
             {

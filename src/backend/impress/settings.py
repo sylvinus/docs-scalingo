@@ -17,7 +17,6 @@ from socket import gethostbyname, gethostname
 from django.utils.translation import gettext_lazy as _
 
 import dj_database_url
-
 import sentry_sdk
 from configurations import Configuration, values
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -76,7 +75,9 @@ class Base(Configuration):
 
     # Database
     DATABASES = {
-        "default": dj_database_url.config() if os.environ.get("DATABASE_URL") else {
+        "default": dj_database_url.config()
+        if os.environ.get("DATABASE_URL")
+        else {
             "ENGINE": values.Value(
                 "django.db.backends.postgresql_psycopg2",
                 environ_name="DB_ENGINE",
@@ -798,6 +799,7 @@ class Production(Base):
         },
     }
 
+
 class ProductionInsecure(Production):
     """
     Production environment settings without SSL or secure headers
@@ -813,15 +815,17 @@ class ProductionInsecure(Production):
     SECURE_CONTENT_TYPE_NOSNIFF = False
 
     STATIC_URL = "/"
-    STATIC_ROOT = values.Value(os.path.join(DATA_DIR, "static_full"), environ_name="STATIC_ROOT")
+    STATIC_ROOT = values.Value(
+        os.path.join(DATA_DIR, "static_full"), environ_name="STATIC_ROOT"
+    )
 
     WHITENOISE_INDEX_FILE = True
-    
+
     # Add our SPA middleware to handle frontend routes
     MIDDLEWARE = [
-        'core.middleware.StaticRewritesMiddleware',
+        "core.middleware.StaticRewritesMiddleware",
     ] + Production.MIDDLEWARE
-    
+
 
 class Feature(Production):
     """
