@@ -821,9 +821,9 @@ class ProductionInsecure(Production):
 
     WHITENOISE_INDEX_FILE = True
 
-    # Add our SPA middleware to handle frontend routes
+    # Add our middleware to handle frontend routes and media files
     MIDDLEWARE = [
-        "core.middleware.StaticRewritesMiddleware",
+        "core.middleware.NativeProxyMiddleware",
     ] + Production.MIDDLEWARE
 
 
